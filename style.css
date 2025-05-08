@@ -1,26 +1,28 @@
+/* Сброс стандартных отступов и внутренних отступов для всех элементов */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+/* Общие стили для body и html */
 body, html {
   width: 100%;
   height: 100%;
   font-family: Arial, sans-serif;
-  overflow: hidden;
-  background: linear-gradient(to top, #000, #fff);
+  overflow: hidden; /* Скрывает прокрутку */
+  background: linear-gradient(to top, #000, #fff); /* Градиентный фон */
 }
 
-/* Капли */
+/* Стили для капель, которые будут анимироваться */
 .drops {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 0;
-  pointer-events: none;
+  z-index: 0; /* На заднем фоне */
+  pointer-events: none; /* Капли не будут блокировать клики */
   overflow: hidden;
 }
 
@@ -31,21 +33,21 @@ body, html {
   height: 10px;
   background-color: rgba(0, 0, 0, 0.3);
   border-radius: 50%;
-  animation: riseDrop 6s linear forwards;
+  animation: riseDrop 6s linear forwards; /* Анимация капель */
 }
 
 @keyframes riseDrop {
   0% {
-    transform: translateY(0);
+    transform: translateY(0); /* Начальное положение капли */
     opacity: 0.4;
   }
   100% {
-    transform: translateY(-120vh);
-    opacity: 0;
+    transform: translateY(-120vh); /* Капля поднимется за пределы экрана */
+    opacity: 0; /* Капля исчезает */
   }
 }
 
-/* Загрузочный экран */
+/* Стили для загрузочного экрана */
 #loader {
   position: fixed;
   top: 0; left: 0;
@@ -54,7 +56,7 @@ body, html {
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 100;
+  z-index: 100; /* Загрузочный экран поверх всего */
 }
 
 .loader-inner {
@@ -64,18 +66,21 @@ body, html {
 }
 
 @keyframes loaderAnim {
-  0% { transform: scaleX(0.5); }
-  100% { transform: scaleX(1); }
+  0% { transform: scaleX(0.5); } /* Начальная анимация сжатия */
+  150% { transform: scaleX(1); } /* Завершающая анимация расширения */
 }
 
-/* Контент */
+/* Стили для скрытого контента, который будет отображаться позже */
 .hidden {
   display: none;
 }
 
+/* Основные стили для главного контейнера */
 #main {
   width: 100%;
-  height: 100%;
+  height: auto;
+  transform: scale(1.4); /* Увеличение на 120% */
+  transform-origin: top center;
   position: relative;
   z-index: 2;
   display: flex;
@@ -83,24 +88,28 @@ body, html {
   align-items: center;
   padding-top: 40px;
   overflow: hidden;
+  padding-bottom: 220px;
 }
 
+/* Стили для контейнера с карточками */
 .cards-container {
   display: flex;
   gap: 40px;
   margin-bottom: 20px;
-  perspective: 1000px;
+  perspective: 1000px; /* Создаёт эффект 3D */
 }
 
+/* Общие стили для карточек */
 .card {
-  width: 350px;
-  height: 500px;
+  width: 330px;       /* Ширина карточки */
+  height: 550px;      /* Высота карточки */
   border-radius: 20px;
-  transition: transform .8s ease, background .5s ease;
+  transition: transform .8s ease, background .5s ease; /* Плавные переходы */
   position: relative;
   overflow: hidden;
 }
 
+/* Стили для содержимого карточки */
 .card .card-content {
   width: 100%;
   height: 100%;
@@ -111,21 +120,23 @@ body, html {
   justify-content: space-between;
 }
 
+/* Стили для изображений-заглушек в карточках */
 .placeholder-img {
-  width: 80%;
-  height: 200px;
+  width: 90%;
+  height: 300px;
   background: #ccc;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 10px;
-  font-size: 24px;
+  font-size: 32px;
   color: #666;
 }
 
+/* Кнопка "Попробовать" */
 .try-btn {
-  display: none;
-  padding: 10px 16px;
+  display: none; /* Изначально скрыта */
+  padding: 14px 22px;
   border: none;
   background: rgba(0, 0, 0, 0.7);
   color: #fff;
@@ -134,50 +145,106 @@ body, html {
   transition: opacity .3s;
 }
 
-/* Цвет и начальное смещение */
+/* Цвет и начальное смещение для красной карточки */
 .card-red {
   background: #e57373;
-  transform: translateX(-400px);
+  transform: translateX(-400px); /* Начальная позиция слева */
 }
+
+/* Цвет и начальное смещение для синей карточки */
 .card-blue {
   background: #64b5f6;
-  transform: translateX(400px);
+  transform: translateX(400px); /* Начальная позиция справа */
 }
 
+/* Когда карточка становится видимой */
 .card.show {
-  transform: translateX(0) rotateY(0);
+  transform: translateX(0) rotateY(0); /* Смещается в центр */
 }
 
+/* Стили для эффекта при наведении на красную карточку */
 .card-red:hover {
   transform: scale(1.05) rotateY(10deg);
   background: linear-gradient(to right, #e57373, #ff0000);
 }
 
+/* Стили для эффекта при наведении на синюю карточку */
 .card-blue:hover {
   transform: scale(1.05) rotateY(-10deg);
   background: linear-gradient(to left, #64b5f6, #0d47a1);
 }
 
+/* Когда наведен курсор на карточку, показывается кнопка "Попробовать" */
 .card:hover .try-btn {
   display: block;
   opacity: 1;
 }
 
+/* Описание под карточками */
 #description {
   min-height: 60px;
   color: #fff;
   font-size: 18px;
   text-align: center;
-  margin-bottom: auto;
-  width: 80%;
+  margin-top: 40px;
+  margin-bottom: 20px;
+  width: 100%;
+  max-width: 800px;
+  padding: 0 20px;
 }
 
+/* Стили для футера */
 footer {
   padding: 10px;
   width: 100%;
   text-align: center;
   background: rgba(0, 0, 0, 0.3);
   color: #fff;
-  position: absolute;
+  position: fixed;
   bottom: 0;
+  left: 0;
+  z-index: 10;
+}
+
+/* Медиа-запросы для адаптивности на мобильных устройствах */
+@media screen and (max-width: 768px) {
+  #main {
+    transform: scale(1); /* Убираем увеличение */
+    padding-bottom: 180px;
+  }
+
+  /* Стили для контейнера карточек на мобильных устройствах */
+  .cards-container {
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 10px;
+  }
+
+  /* Стили для карточек на мобильных устройствах */
+  .card {
+    width: 90%;
+    height: auto;
+    margin: 0 auto; /* Центрируем */
+  }
+
+  #description {
+    font-size: 16px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    padding: 0 10px;
+  }
+
+  /* Стили для футера на мобильных устройствах */
+  footer {
+    padding: 8px;
+    position: relative;
+    bottom: 0;
+    margin-top: 280px;
+  }
+
+  /* Размер загрузочного индикатора на мобильных устройствах */
+  .loader-inner {
+    width: 80px;
+    height: 80px;
+  }
 }
