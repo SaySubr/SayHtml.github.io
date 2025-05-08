@@ -59,15 +59,36 @@ body, html {
   z-index: 100; /* Загрузочный экран поверх всего */
 }
 
-.loader-inner {
-  width: 100px; height: 100px;
-  background: linear-gradient(to right, #0066ff, #ff0000);
-  animation: loaderAnim 5s ease-in-out infinite alternate;
+@keyframes loaderAnim {
+  0% {
+    transform: scaleX(0.00001); /* Начальная анимация сжатия */
+    background-color: #0066ff; /* Начальный цвет (синий) */
+  }
+  50% {
+    transform: scaleX(0.5); /* Начальная анимация сжатия */
+    background-color: #0066ff; /* Начальный цвет (синий) */
+  }
+  80% {
+    transform: scaleY(1) rotate(45deg); /* Вращение на 45 градусов для ромба */
+    border-radius: 0%; /* Без скругления */
+    background-color: #ff0000; /* Цвет меняется на красный */
+  }
+  150% {
+    transform: scaleY(1); /* Завершающая анимация расширения */
+    background-color: #0066ff; /* Возвращаем на синий */
+  }
+  250% {
+    transform: scaleY(0.1); /* Завершающая анимация сжатия */
+    background-color: #ff0000; /* Цвет меняется на красный снова */
+  }
 }
 
-@keyframes loaderAnim {
-  0% { transform: scaleX(0.5); } /* Начальная анимация сжатия */
-  150% { transform: scaleX(1); } /* Завершающая анимация расширения */
+.loader-inner {
+  width: 200px;
+  height: 200px;
+  background: #0066ff; /* Начальный цвет */
+  animation: loaderAnim 5s ease-in-out infinite alternate;
+  transition: background-color 0.5s ease; /* Плавный переход цвета */
 }
 
 /* Стили для скрытого контента, который будет отображаться позже */
@@ -120,7 +141,7 @@ body, html {
   justify-content: space-between;
 }
 
-/* Стили для изображений-заглушек в карточках */
+/* Стили для изображений в карточках */
 .placeholder-img {
   width: 90%;
   height: 300px;
@@ -249,7 +270,9 @@ footer {
     height: 80px;
   }
 }
+
+/* Разрешаем вертикальный скролл для body и html */
 body, html {
   height: 100%;
-  overflow-y: auto; /* Разрешаем вертикальный скролл */
+  overflow-y: auto;
 }

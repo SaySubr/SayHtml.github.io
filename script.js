@@ -18,16 +18,26 @@
     setTimeout(() => drop.remove(), 7000); // Удаляем каплю через 7 секунд
   }
 
-  // Создаем капли каждую 250 миллисекунд
-  setInterval(createDrop, 250);
+  // Создаем капли каждую 50 миллисекунд
+  setInterval(createDrop, 50);
+
 
   // Скрытие загрузочного экрана и отображение контента с анимацией
   setTimeout(() => {
-    loader.style.display = 'none'; // Скрываем загрузочный экран
-    main.classList.remove('hidden'); // Показываем основной контент
-    setTimeout(() => card1.classList.add('show'), 200); // Появление первой карточки
-    setTimeout(() => card2.classList.add('show'), 400); // Появление второй карточки
-  }, 5500); // Задержка перед запуском анимации (5.5 секунд)
+  loader.style.display = 'none'; // Скрываем загрузочный экран
+  main.classList.remove('hidden'); // Показываем основной контент
+
+  // Рандомная задержка для появления анимации карточек
+  const randomDelay1 = Math.random() * 1500 + 500; // Рандомная задержка от 0.5 до 2 секунд
+  const randomDelay2 = Math.random() * 1500 + 500; // Рандомная задержка от 0.5 до 2 секунд
+
+  // Появление первой карточки с рандомной задержкой
+  setTimeout(() => card1.classList.add('show'), randomDelay1);
+
+   // Появление второй карточки с рандомной задержкой
+  setTimeout(() => card2.classList.add('show'), randomDelay2);
+}, Math.random() * 7000 + 500); // Задерживает работу загрузочного экрана(не скрывает его)
+
 
   // Действия при наведении на карточку 1
   card1.addEventListener('mouseenter', () => {
@@ -38,9 +48,10 @@
   });
   // Действия при клике на кнопку на карточке 1
   card1.querySelector('.try-btn').addEventListener('click', () => {
-    location.href = 'https://c1d0-185-200-106-39.ngrok-free.app/'; // Переход на другой сайт
+    location.href = 'https://c1d0-185-200-106-39.ngrok-free.app/'; // Переход на cтраницу Stable
     // использовуй локальный сервер: http://localhost:5000
   });
+
 
   // Действия при наведении на карточку 2
   card2.addEventListener('mouseenter', () => {
