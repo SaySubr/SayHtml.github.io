@@ -211,6 +211,7 @@ footer {
   #main {
     transform: scale(1); /* Убираем увеличение */
     padding-bottom: 180px;
+    overflow-y: auto;
   }
 
   /* Стили для контейнера карточек на мобильных устройствах */
@@ -247,4 +248,8 @@ footer {
     width: 80px;
     height: 80px;
   }
+}
+body, html {
+  height: 100%;
+  overflow-y: auto; /* Разрешаем вертикальный скролл */
 }
