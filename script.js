@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
     desc.textContent = '';
   });
   card1.querySelector('.try-btn').addEventListener('click', () => {
-    location.href = 'https://c1d0-185-200-106-39.ngrok-free.app/';
+    location.href = 'https://c1d0-185-200-106-39.ngrok-free.app';
 });//http://localhost:5000 cюда тыкай
 
   //действия на сайте (карточка 1)
