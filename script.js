@@ -18,15 +18,27 @@
     setTimeout(() => drop.remove(), 7000); // Удаляем каплю через 7 секунд
   }
 
-  //Функция проверки на оффлайн сервера
-  async function openServer(url, offlinePage) {
+ // Функция проверки на оффлайн сервера с таймаутом
+async function openServer(url, offlinePage) {
+  // Промис для таймаута: если сервер не отвечает за 5 секунд, выдаём ошибку
+  const timeout = new Promise((_, reject) => {
+    setTimeout(() => reject(new Error('Сервер не отвечает')), 5000); // 5 секунд таймаут
+  });
+
   try {
-    await fetch(url, { method: 'HEAD', mode: 'no-cors' });
+    // Пытаемся достучаться до сервера через HEAD (без CORS) и запускаем гонку с таймаутом
+    await Promise.race([
+      fetch(url, { method: 'HEAD', mode: 'no-cors' }),
+      timeout
+    ]);
+    // Сервер доступен — переходим на него
     location.href = url;
-   } catch {
+  } catch (err) {
+    // Сервер недоступен или таймаут — редирект на офлайн страницу
     location.href = offlinePage;
-    }
   }
+}
+
 
   // Создаем капли каждую 50 миллисекунд
   setInterval(createDrop, 50);
@@ -58,7 +70,8 @@
   });
   // Действия при клике на кнопку на карточке 1
  card1.querySelector('.try-btn').addEventListener('click', () => {
-  openServer('https://8df8d867101d.ngrok-free./', 'StableOffline.html');
+  openServer('https://8df8d867101d.ngrok-free./', 'StableOffline.html'); // Переход на cтраницу Stable
+	 // используй локальный сервер: http://localhost:5000 (1 строчка в ngrok)
   });
 
 
