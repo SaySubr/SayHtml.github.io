@@ -18,38 +18,51 @@
     setTimeout(() => drop.remove(), 7000); // Удаляем каплю через 7 секунд
   }
 
- // Функция проверки на оффлайн сервера с таймаутом
-    async function openServer(siteBase, offlinePage, redirectTo = siteBase) {
+  // Функция проверки на оффлайн сервера с таймаутом
+    async function openServer(siteBase, offlinePage) {
       const controller = new AbortController();
-      const t = setTimeout(() => controller.abort(), 5000);
+      const timeoutId = setTimeout(() => controller.abort(), 10000);
 
       try {
-        const res = await fetch(siteBase + "/health", {
-          method: "GET",
-          headers: { "Accept": "application/json" },
-          signal: controller.signal
-        });
-        clearTimeout(t);
+        console.log('[openServer] Проверяем сервер:', siteBase);
 
-        // проверка, что ответ именно JSON, а не заглушка ngrok
-        const ct = res.headers.get("content-type") || "";
-        if (!res.ok || !ct.includes("application/json")) throw new Error("not-json");
+        const res = await fetch(siteBase, { method: "GET", signal: controller.signal });
+        clearTimeout(timeoutId);
 
-        const data = await res.json();
-        if (data && data.status === "ok") {
-          location.href = redirectTo; // сервер жив → редирект на UI
+        const text = await res.text();
+        console.log('[openServer] Полученный HTML:', text.slice(0, 1000), '...');
+        // показываем только первые 1000 символов, чтобы не забивать консоль
+
+        const noscriptMatch = text.match(/<noscript>([\s\S]*?)<\/noscript>/i);
+        if (noscriptMatch) {
+          const noscriptText = noscriptMatch[1].trim();
+          console.log('[openServer] <noscript> найден:', noscriptText);
+
+          if (noscriptText.includes('ERR_NGROK_3200')) {
+            console.log('[openServer] Сервер оффлайн, переходим на:', offlinePage);
+            location.href = offlinePage;
+            return;
+          } else {
+            console.log('[openServer] Сервер онлайн, переходим на:', siteBase);
+            location.href = siteBase;
+            return;
+          }
         } else {
-          location.href = offlinePage; // сервер ответил "offline"
+          console.log('[openServer] <noscript> не найден, считаем сервер онлайн');
+          location.href = siteBase;
+          return;
         }
-      } catch (e) {
-        clearTimeout(t);
-        location.href = offlinePage; // таймаут или заглушка → оффлайн
+
+      } catch (err) {
+        clearTimeout(timeoutId);
+        console.error('[openServer] Ошибка при проверке сервера:', err);
+        location.href = offlinePage;
       }
     }
 
 
 
-  // Создаем капли каждую 50 миллисекунд
+    // Создаем капли каждую 50 миллисекунд
   setInterval(createDrop, 50);
 
 
@@ -80,13 +93,12 @@
     // Действия при клике на кнопку на карточке 1
     card1.querySelector('.try-btn').addEventListener('click', () => {
       openServer(
-          'https://8df8d867101d.ngrok-free.app/', // // Переход на cтраницу Stable
+          'https://502e5790cb78.ngrok-free.app/', // / Переход на cтраницу Stable
           // используй локальный сервер: http://localhost:5000 (1 строчка в ngrok)
-          'StableOffline.html',                   // оффлайн-страница
-          'https://8df8d867101d.ngrok-free.app/stable.html' // если сервер доступен → редиректим сразу на stable.html
+          'StableOffline.html'                     // оффлайн-страница
       );
-      // используй локальный сервер: http://localhost:5000 (1 строчка в ngrok)
     });
+
 
 
 
