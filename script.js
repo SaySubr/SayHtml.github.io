@@ -48,7 +48,7 @@
   });
   // Действия при клике на кнопку на карточке 1
   card1.querySelector('.try-btn').addEventListener('click', () => {
-    location.href = 'https://2991-185-200-106-39.ngrok-free.app/'; // Переход на cтраницу Stable
+    location.href = 'https://8df8d867101d.ngrok-free.app/'; // Переход на cтраницу Stable
     // использовуй локальный сервер: http://localhost:5000
   });
 
