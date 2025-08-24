@@ -70,7 +70,7 @@ async function openServer(url, offlinePage) {
   });
   // Действия при клике на кнопку на карточке 1
  card1.querySelector('.try-btn').addEventListener('click', () => {
-  openServer('https://8df8d867101d.ngrok-free./', 'StableOffline.html'); // Переход на cтраницу Stable
+  openServer('https://8df8d867101d.ngrok-free.app/', 'StableOffline.html'); // Переход на cтраницу Stable
 	 // используй локальный сервер: http://localhost:5000 (1 строчка в ngrok)
   });
 
