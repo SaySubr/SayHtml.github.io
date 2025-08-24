@@ -22,7 +22,7 @@
     async function openServer(siteBase, offlinePage) {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 10000);
-
+      
       try {
         console.log('[openServer] Проверяем сервер:', siteBase);
 
@@ -31,7 +31,6 @@
 
         const text = await res.text();
         console.log('[openServer] Полученный HTML:', text.slice(0, 1000), '...');
-        // показываем только первые 1000 символов, чтобы не забивать консоль
 
         const noscriptMatch = text.match(/<noscript>([\s\S]*?)<\/noscript>/i);
         if (noscriptMatch) {
@@ -59,8 +58,7 @@
         location.href = offlinePage;
       }
     }
-
-
+    
 
     // Создаем капли каждую 50 миллисекунд
   setInterval(createDrop, 50);
