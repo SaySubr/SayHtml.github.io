@@ -1,0 +1,105 @@
+/* сброс */
+* { margin:0; padding:0; box-sizing:border-box; }
+body, html { width:100%; height:100%; overflow:hidden; font-family:Arial,sans-serif; }
+
+/* фон и анимация треугольников */
+body {
+  background: linear-gradient(to top, #000000 0%, #8b0000 100%);
+  position: relative;
+}
+#triangle-container {
+  position: fixed;
+  top:0; left:0; width:100%; height:100%; overflow:hidden; pointer-events:none; z-index:-1;
+}
+.triangle {
+  position: absolute;
+  width:0; height:0;
+  border-left:8px solid transparent;
+  border-right:8px solid transparent;
+  border-bottom:14px solid red;
+  opacity:0.6;
+  animation: fallDown linear infinite;
+}
+@keyframes fallDown {
+  0% { transform: translateY(-100px) rotate(0deg); opacity:0.6; }
+  100% { transform: translateY(100vh) rotate(360deg); opacity:0; }
+}
+
+/* основной контейнер */
+.offline-container {
+  position: relative;
+  z-index:1;
+  display: flex; flex-direction: column; align-items:center; justify-content:center;
+  height:100%;
+  padding:20px;
+  border-radius:12px;
+  background: rgba(0,0,0,0.5);
+  box-shadow:0 0 20px rgba(0,0,0,0.5);
+  text-align:center;
+  color: #fff;
+  margin-bottom: 400px;
+}
+
+/* заголовок с пульсацией */
+.offline-container h1 {
+  font-size:2em;
+  color:#fff;
+  margin-bottom:20px;
+  animation: titlePulse 3s ease-in-out infinite;
+}
+@keyframes titlePulse {
+  0% { transform: scale(1); color:#fff; }
+  50% { transform: scale(1.2); color:#000; }
+  100% { transform: scale(1); color:#fff; }
+}
+
+/* изображение */
+.offline-img {
+  width:200px;
+  margin:20px 0;
+  border-radius:8px;
+  box-shadow:0 0 12px rgba(0,0,0,0.2);
+}
+
+/* кнопка */
+button {
+  padding:10px 20px;
+  border:none;
+  border-radius:6px;
+  background-color:#222;
+  color:#fff;
+  cursor:pointer;
+  font-size:16px;
+  transition:0.3s;
+}
+button:hover {
+  background-color:#555;
+}
+#triangle-container {
+  position: fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  pointer-events:none;
+  z-index:-1;
+  background: linear-gradient(to top, #000000 0%, #8b0000 100%);
+}
+
+.triangle {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 14px solid #3d0303; 
+  opacity: 0.4; 
+  animation: fallDown linear infinite;
+}
+
+@keyframes fallDown {
+  0% { transform: translateY(-100px) rotate(0deg); opacity:0.4; }
+  100% { transform: translateY(100vh) rotate(360deg); opacity:0; }
+}
+

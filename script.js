@@ -18,6 +18,16 @@
     setTimeout(() => drop.remove(), 7000); // Удаляем каплю через 7 секунд
   }
 
+  //Функция проверки на оффлайн сервера
+  async function openServer(url, offlinePage) {
+  try {
+    await fetch(url, { method: 'HEAD', mode: 'no-cors' });
+    location.href = url;
+   } catch {
+    location.href = offlinePage;
+    }
+  }
+
   // Создаем капли каждую 50 миллисекунд
   setInterval(createDrop, 50);
 
@@ -47,9 +57,8 @@
     desc.textContent = ''; // Очищаем описание при уходе с карточки
   });
   // Действия при клике на кнопку на карточке 1
-  card1.querySelector('.try-btn').addEventListener('click', () => {
-    location.href = 'https://8df8d867101d.ngrok-free.app/'; // Переход на cтраницу Stable
-    // использовуй локальный сервер: http://localhost:5000
+ card1.querySelector('.try-btn').addEventListener('click', () => {
+  openServer('https://8df8d867101d.ngrok-free./', 'StableOffline.html');
   });
 
 
