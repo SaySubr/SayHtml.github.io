@@ -19,25 +19,34 @@
   }
 
  // Функция проверки на оффлайн сервера с таймаутом
-async function openServer(url, offlinePage) {
-  // Промис для таймаута: если сервер не отвечает за 5 секунд, выдаём ошибку
-  const timeout = new Promise((_, reject) => {
-    setTimeout(() => reject(new Error('Сервер не отвечает')), 5000); // 5 секунд таймаут
-  });
+    async function openServer(siteBase, offlinePage, redirectTo = siteBase) {
+      const controller = new AbortController();
+      const t = setTimeout(() => controller.abort(), 5000);
 
-  try {
-    // Пытаемся достучаться до сервера через HEAD (без CORS) и запускаем гонку с таймаутом
-    await Promise.race([
-      fetch(url, { method: 'HEAD', mode: 'no-cors' }),
-      timeout
-    ]);
-    // Сервер доступен — переходим на него
-    location.href = url;
-  } catch (err) {
-    // Сервер недоступен или таймаут — редирект на офлайн страницу
-    location.href = offlinePage;
-  }
-}
+      try {
+        const res = await fetch(siteBase + "/health", {
+          method: "GET",
+          headers: { "Accept": "application/json" },
+          signal: controller.signal
+        });
+        clearTimeout(t);
+
+        // проверка, что ответ именно JSON, а не заглушка ngrok
+        const ct = res.headers.get("content-type") || "";
+        if (!res.ok || !ct.includes("application/json")) throw new Error("not-json");
+
+        const data = await res.json();
+        if (data && data.status === "ok") {
+          location.href = redirectTo; // сервер жив → редирект на UI
+        } else {
+          location.href = offlinePage; // сервер ответил "offline"
+        }
+      } catch (e) {
+        clearTimeout(t);
+        location.href = offlinePage; // таймаут или заглушка → оффлайн
+      }
+    }
+
 
 
   // Создаем капли каждую 50 миллисекунд
@@ -68,14 +77,20 @@ async function openServer(url, offlinePage) {
   card1.addEventListener('mouseleave', () => {
     desc.textContent = ''; // Очищаем описание при уходе с карточки
   });
-  // Действия при клике на кнопку на карточке 1
- card1.querySelector('.try-btn').addEventListener('click', () => {
-  openServer('https://8df8d867101d.ngrok-free.app/', 'StableOffline.html'); // Переход на cтраницу Stable
-	 // используй локальный сервер: http://localhost:5000 (1 строчка в ngrok)
-  });
+    // Действия при клике на кнопку на карточке 1
+    card1.querySelector('.try-btn').addEventListener('click', () => {
+      openServer(
+          'https://8df8d867101d.ngrok-free.app/', // // Переход на cтраницу Stable
+          // используй локальный сервер: http://localhost:5000 (1 строчка в ngrok)
+          'StableOffline.html',                   // оффлайн-страница
+          'https://8df8d867101d.ngrok-free.app/stable.html' // если сервер доступен → редиректим сразу на stable.html
+      );
+      // используй локальный сервер: http://localhost:5000 (1 строчка в ngrok)
+    });
 
 
-  // Действия при наведении на карточку 2
+
+    // Действия при наведении на карточку 2
   card2.addEventListener('mouseenter', () => {
     desc.textContent = 'IQAir — это система мониторинга качества воздуха в реальном времени. На интерактивной карте вы можете отслеживать уровень задымленности, загрязнений и принимать решения о прогулках на основе данных.';
   });
