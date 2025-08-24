@@ -21,7 +21,7 @@ This repository demonstrates my understanding of creating modular front-end appl
 
 | Main Page | IQAir Map | Stable Diffusion Map                                  |
 |-----------|-----------|-------------------------------------------------------|
-| ![Main](screenshots/main.png) | ![IQAir](screenshots/iqair.png) | ![Stable Diffusion](screenshots/Stable Diffusion.png) |
+| ![Main](Image/main.png) | ![IQAir](Image/iqair.png) | ![Stable Diffusion](Image/Stable_Diffusion.png) |
 
 ---
 
